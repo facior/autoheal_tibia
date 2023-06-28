@@ -1,4 +1,6 @@
 import time
+import webbrowser
+
 import keyboard
 import threading
 import tkinter as tk
@@ -31,28 +33,40 @@ def on_closing(event=None):
     running = False
     root.destroy()
 
-# Tworzenie okna głównego
-root = tk.Tk()
-root.title("Proste GUI")
+class HyperlinkLabel(tk.Label):
+    def __init__(self, master, text, url, *args, **kwargs):
+        super().__init__(master, text=text, fg="blue", cursor="hand2", *args, **kwargs)
+        self.url = url
+        self.bind("<Button-1>", self.open_link)
 
-# Tworzenie etykiety
-label = tk.Label(root, text="Witaj w prostym GUI!")
+    def open_link(self, event):
+        webbrowser.open(self.url)
+
+root = tk.Tk()
+root.title("Hello in Tibia AutoHeal Bot by facior")
+
+
+
+label = tk.Label(root, text="Hello in Tibia AutoHeal Bot by facior")
 label.pack(pady=20)
 
-# Tworzenie etykiety statusu
-status_label = tk.Label(root, text="Funkcja gotowa", fg="black")
+hyperlink_label = HyperlinkLabel(root, text="My other GitHub projects", url="https://www.github.com/facior")
+hyperlink_label.pack(pady=20)
+
+
+status_label = tk.Label(root, text="Program is ready", fg="black")
 status_label.pack(pady=10)
 
-custom_label = tk.Label(root, text="Klawisz M start AutoHeala", font=("Arial", 12))
+custom_label = tk.Label(root, text="Press key M to start AutoHeal", font=("Arial", 12))
 custom_label.pack(pady=10)
-custom_label = tk.Label(root, text="Klawisz J stop AutoHeala", font=("Arial", 12))
+custom_label = tk.Label(root, text="Press key J to stop AutoHeal", font=("Arial", 12))
 custom_label.pack(pady=10)
-custom_label = tk.Label(root, text="Klawisz ESC wyłącza program", font=("Arial", 12))
+custom_label = tk.Label(root, text="Press key ESC to close program", font=("Arial", 12))
 custom_label.pack(pady=10)
 
-keyboard.add_hotkey('m', start_press_key)  # Uruchomienie funkcji start_press_key() po naciśnięciu klawisza "M"
-keyboard.add_hotkey('j', stop_key)  # Wywołanie funkcji stop_key() po naciśnięciu klawisza "J"
+keyboard.add_hotkey('m', start_press_key)
+keyboard.add_hotkey('j', stop_key)
 
-root.bind('<Escape>', on_closing)  # Wywołanie funkcji on_closing() przy naciśnięciu klawisza Esc
+root.bind('<Escape>', on_closing)
 
 root.mainloop()
